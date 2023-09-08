@@ -1,0 +1,49 @@
+﻿@page
+@model CurrencyConverter.Pages.IndexModel
+@{
+    ViewData["Title"] = "Currency Converter";
+}
+
+<h1>Currency Converter</h1>
+<label for="amount">Amount:</label>
+<input type="number" id="amount" asp-for="CurrencyConversionModel.Amount" required />
+<span asp-validation-for="CurrencyConversionModel.Amount" class="text-danger"></span>
+<br />
+<label for="fromCurrency">From:</label>
+<select id="fromCurrency" asp-for="CurrencyConversionModel.FromCurrencyCode">
+    <option value="">Select Currency</option>
+    @foreach (var currency in Model.CurrencyConversionModel.Currencies)
+    {
+        <option value="@currency.Rate">@currency.Code</option>
+    }
+</select>
+<span asp-validation-for="CurrencyConversionModel.FromCurrencyCode" class="text-danger"></span>
+<br />
+<label for="toCurrency">To:</label>
+<select id="toCurrency" asp-for="CurrencyConversionModel.ToCurrencyCode">
+    <option value="">Select Currency</option>
+    @foreach (var currency in Model.CurrencyConversionModel.Currencies)
+    {
+        <option value="@currency.Rate">@currency.Code</option>
+    }
+</select>
+<span asp-validation-for="CurrencyConversionModel.ToCurrencyCode" class="text-danger"></span>
+<br />
+<button id="convertBtn" type="button">Convert</button>
+<p id="result"></p>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>// JavaScript code for handling form submission using AJAX
+        $(document).ready(function () {
+            $("#convertBtn").click(function () {
+                var amount = $("#amount").val();
+                var fromCurrency = $("#fromCurrency").val();
+                var toCurrency = $("#toCurrency").val();
+
+                var convertedAmount = amount * toCurrency / fromCurrency;
+
+                $("#result").text(convertedAmount.toFixed(2));
+            });
+        });</script>
+}
